@@ -1,0 +1,136 @@
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тайм-менеджмент</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Библиотеки (загружаются из интернета) -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <!-- ЭКРАН 1: СТАРТ -->
+  <div id="screen-start" class="screen active">
+    <div class="start-card">
+      <div class="badge">Практикум</div>
+      <h1>Тайм-менеджмент</h1>
+      <p class="subtitle">Два упражнения — и вы увидите,<br>
+        куда уходит ваше время.</p>
+
+      <label>Ваше имя</label>
+      <input type="text" id="student-name" placeholder="Иванова Мария" />
+
+      
+
+      <button class="btn-main" onclick="startApp()">Начать упражнение →</button>
+      <p class="note">Результаты можно скачать в PDF и Excel</p>
+    </div>
+  </div>
+
+  <!-- ЭКРАН 2: ЗАДАНИЕ 1 -->
+  <div id="screen-task1" class="screen">
+    <div class="inner">
+      <div class="steps">
+        <span class="step active">1</span>
+        <span class="step-line"></span>
+        <span class="step">2</span>
+        <span class="step-line"></span>
+        <span class="step">3</span>
+      </div>
+      <h2>Ценности и цели</h2>
+      <p class="desc">Перетащите строки по важности (сверху — важнее).
+        Укажите, насколько каждая цель реализована (0–100%).</p>
+      <div class="tbl-wrap">
+        <div class="tbl-head">
+          <span>Ранг</span><span>Ценность</span><span>Реализовано %</span>
+        </div>
+        <ul id="values-list"></ul>
+      </div>
+      <div class="row-btns">
+        <button class="btn-back" onclick="goTo('screen-start')">← Назад</button>
+        <button class="btn-main" onclick="submitTask1()">Далее →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЭКРАН 3: ЗАДАНИЕ 2 -->
+  <div id="screen-task2" class="screen">
+    <div class="inner">
+      <div class="steps">
+        <span class="step done">✓</span>
+        <span class="step-line filled"></span>
+        <span class="step active">2</span>
+        <span class="step-line"></span>
+        <span class="step">3</span>
+      </div>
+      <h2>Хронометраж дня</h2>
+      <p class="desc">Опишите всё, что делали вчера. Итого должно быть
+        <strong>1440 минут</strong>.</p>
+      <div class="tbl-wrap">
+        <div class="tbl-head chrono-head">
+          <span>Мероприятие</span>
+          <span>Время</span>
+          <span>Минуты</span>
+          <span></span>
+        </div>
+        <div id="chrono-list"></div>
+      </div>
+      <button class="btn-add" onclick="addRow()">+ Добавить строку</button>
+      <div class="counter">
+        Итого: <span id="minutes-total">0</span> / 1440 минут
+      </div>
+      <div class="row-btns">
+        <button class="btn-back" onclick="goTo('screen-task1')">← Назад</button>
+        <button class="btn-main" onclick="submitTask2()">Получить результат →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЭКРАН 4: РЕЗУЛЬТАТЫ -->
+  <div id="screen-results" class="screen">
+    <div class="inner" id="results-content">
+      <div class="steps">
+        <span class="step done">✓</span>
+        <span class="step-line filled"></span>
+        <span class="step done">✓</span>
+        <span class="step-line filled"></span>
+        <span class="step active">3</span>
+      </div>
+      <h2>Результаты</h2>
+      <p id="result-name" class="result-name"></p>
+
+      <section class="result-block">
+        <h3>Задание 1 — Ценности</h3>
+        <div id="result-values"></div>
+      </section>
+
+      <section class="result-block">
+        <h3>Задание 2 — Хронометраж</h3>
+        <div id="result-chrono"></div>
+      </section>
+
+      <section class="result-block recs" id="recs-section">
+        <h3>Рекомендации по планированию</h3>
+        <div id="recs-content">
+          <div class="loading">Анализируем ваш день...</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="export-bar">
+      <button class="btn-export" onclick="exportPDF()">⬇ PDF</button>
+      <button class="btn-export" onclick="exportExcel()">⬇ Excel</button>
+      <button class="btn-back" onclick="resetApp()">↺ Заново</button>
+    </div>
+  </div>
+
+  <!-- Подключаем наши скрипты -->
+  <script src="app.js"></script>
+  <script src="analysis.js"></script>
+  <script src="export.js"></script>
+</body>
+</html>
